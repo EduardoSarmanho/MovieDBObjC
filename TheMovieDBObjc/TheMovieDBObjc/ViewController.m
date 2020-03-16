@@ -8,7 +8,10 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource> {
+    NSMutableArray *movieArray;
+}
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -16,8 +19,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+//    [self arraySetup];
 }
-
+//
+//- (void)arraySetUp {
+//    movieArray = [NSMutableArray movieArray: @[@"1",@"2",@"3",@"4",@"5",@"6",@"7"]];
+//}
+//
+//- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+//    return movieArray.count;
+//}
+//
+//- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+//    
+//}
 
 @end
