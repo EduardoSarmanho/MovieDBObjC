@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		279674BA2420130700247885 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 279674B92420130700247885 /* Movie.m */; };
+		279674BD2420157900247885 /* APIAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 279674BC2420157900247885 /* APIAnswer.m */; };
 		7F319F492420136A004188E1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F319F482420136A004188E1 /* TableViewCell.m */; };
 		7FA74220241FF756000C8528 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7421F241FF756000C8528 /* AppDelegate.m */; };
 		7FA74223241FF756000C8528 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA74222241FF756000C8528 /* SceneDelegate.m */; };
@@ -18,6 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		279674B82420130700247885 /* Movie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
+		279674B92420130700247885 /* Movie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
+		279674BB2420157900247885 /* APIAnswer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = APIAnswer.h; sourceTree = "<group>"; };
+		279674BC2420157900247885 /* APIAnswer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APIAnswer.m; sourceTree = "<group>"; };
 		7F319F472420136A004188E1 /* TableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		7F319F482420136A004188E1 /* TableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
 		7FA7421B241FF756000C8528 /* TheMovieDBObjc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TheMovieDBObjc.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +76,10 @@
 				7FA74222241FF756000C8528 /* SceneDelegate.m */,
 				7FA74224241FF756000C8528 /* ViewController.h */,
 				7FA74225241FF756000C8528 /* ViewController.m */,
+				279674BB2420157900247885 /* APIAnswer.h */,
+				279674BC2420157900247885 /* APIAnswer.m */,
+				279674B82420130700247885 /* Movie.h */,
+				279674B92420130700247885 /* Movie.m */,
 				7F319F472420136A004188E1 /* TableViewCell.h */,
 				7F319F482420136A004188E1 /* TableViewCell.m */,
 				7FA74227241FF756000C8528 /* Main.storyboard */,
@@ -153,6 +163,8 @@
 			files = (
 				7FA74226241FF756000C8528 /* ViewController.m in Sources */,
 				7FA74220241FF756000C8528 /* AppDelegate.m in Sources */,
+				279674BD2420157900247885 /* APIAnswer.m in Sources */,
+				279674BA2420130700247885 /* Movie.m in Sources */,
 				7FA74231241FF759000C8528 /* main.m in Sources */,
 				7F319F492420136A004188E1 /* TableViewCell.m in Sources */,
 				7FA74223241FF756000C8528 /* SceneDelegate.m in Sources */,
