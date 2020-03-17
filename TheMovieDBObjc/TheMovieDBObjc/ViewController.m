@@ -12,6 +12,8 @@
 
 @interface ViewController ()
 
+@property (strong, nonatomic) NSMutableArray<Movie *> *movies;
+
 @end
 
 @implementation ViewController
@@ -23,6 +25,10 @@
     // Do any additional setup after loading the view.
 }
 
+- (void) setupMovies {
+    self.movies = NSMutableArray.new;
+}
+
 - (void) fetchMoviesUsingJSON {
     NSLog(@"Fetching Movies...");
     
@@ -30,11 +36,6 @@
     NSURL *url = [NSURL URLWithString:urlString];
     
     [[NSURLSession.sharedSession dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
-        NSLog(@"Finished fetching courses!");
-        
-//        NSString *dummyString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//        NSLog(@"Dummy string%@", dummyString);
         
         NSError *err;
         NSArray *results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
@@ -64,8 +65,14 @@
 
             [movies addObject:movie];
         }
-        NSLog(@"%@", movies);
         
+        self.movies = movies;
+        
+        NSLog(@"Finished fetching courses!");
+        
+        for (Movie *movie in movies) {
+            NSLog(@"%@", movie.title);
+        }
         
     }] resume];
 }
