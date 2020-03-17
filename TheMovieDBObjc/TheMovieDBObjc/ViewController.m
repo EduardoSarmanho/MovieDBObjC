@@ -19,19 +19,27 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self arraySetup];
+    [self arraySetUp];
 }
-//
-//- (void)arraySetUp {
-//    movieArray = [NSMutableArray movieArray: @[@"1",@"2",@"3",@"4",@"5",@"6",@"7"]];
-//}
-//
-//- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-//    return movieArray.count;
-//}
-//
-//- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//    
-//}
+
+- (void)arraySetUp {
+    movieArray = [NSMutableArray arrayWithArray: @[@"1",@"2",@"3",@"4",@"5",@"6",@"7"]];
+}
+
+#pragma mark - UITableView Delegate, DataSource
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    static NSString *cellID = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+    
+    return movieArray.count;
+
+}
 
 @end
