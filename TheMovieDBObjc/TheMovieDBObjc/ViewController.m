@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "Movie.h"
 #import "APIAnswer.h"
+#import "TableViewCell.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource> {
     NSMutableArray *movieArray;
@@ -89,10 +90,24 @@
 #pragma mark - UITableView Delegate, DataSource
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    static NSString *cellID = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+//    static NSString *cellID = @"cell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+//
+   static NSString *simpleTableIdentifier = @"cell";
     
-    return cell;
+       TableViewCell *cell = (TableViewCell *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+       if (cell == nil)
+       {
+           NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SimpleTableCell" owner:self options:nil];
+           cell = [nib objectAtIndex:0];
+       }
+    cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
+    cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
+    cell.movieTitle.text = @"titulo do filme, por gentileza";
+    cell.movireRatingLabel.text = @"nota";
+
+    
+       return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

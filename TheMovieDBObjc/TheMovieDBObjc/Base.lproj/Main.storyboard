@@ -43,7 +43,7 @@
                                 <rect key="frame" x="14" y="228" width="386" height="634"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="129" id="Tgi-ww-yDq">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="129" id="Tgi-ww-yDq" customClass="TableViewCell">
                                         <rect key="frame" x="0.0" y="28" width="386" height="129"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Tgi-ww-yDq" id="C2J-iM-RPQ">
@@ -106,6 +106,12 @@
                                                 <constraint firstItem="cXM-pr-O7V" firstAttribute="top" secondItem="4JE-Wj-CGa" secondAttribute="bottom" constant="5" id="ywm-Zt-wSc"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="movieDescriptionLabel" destination="4JE-Wj-CGa" id="tRl-lF-tqZ"/>
+                                            <outlet property="movieImage" destination="rbZ-L4-feJ" id="eyC-Fd-Q56"/>
+                                            <outlet property="movieTitle" destination="8se-0I-9VP" id="hLE-T5-AHo"/>
+                                            <outlet property="movireRatingLabel" destination="m8k-jv-nTK" id="Ta0-Ks-omK"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
