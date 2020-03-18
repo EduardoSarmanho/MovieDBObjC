@@ -10,7 +10,10 @@
 #import "Movie.h"
 #import "APIAnswer.h"
 
-@interface ViewController ()
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource> {
+    NSMutableArray *movieArray;
+}
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray<Movie *> *popularMovies;
 @property (strong, nonatomic) NSMutableArray<Movie *> *nowPlayingMovies;
@@ -21,6 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self arraySetUp];
     
     [self fetchPopularMovies];
     [self fetchNowPlayingMovies];
@@ -121,5 +125,27 @@
     }] resume];
 }
 
+
+
+
+- (void)arraySetUp {
+    movieArray = [NSMutableArray arrayWithArray: @[@"1",@"2",@"3",@"4",@"5",@"6",@"7"]];
+}
+
+#pragma mark - UITableView Delegate, DataSource
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    static NSString *cellID = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+    
+    return movieArray.count;
+
+}
 
 @end
