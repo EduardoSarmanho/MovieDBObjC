@@ -27,10 +27,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self movieSetUp];
-    [self arraySetUp];
     [self fetchPopularMovies];
     [self fetchNowPlayingMovies];
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [self.tableView reloadData];
+    });
 }
 
 - (void) fetchPopularMovies {
@@ -71,10 +74,6 @@
         }
         
         self.popularMovies = movies;
-        
-        for (Movie *movie in movies) {
-            NSLog(@"%@", movie.title);
-        }
         
         NSLog(@"Finished fetching popular movies!");
     }] resume];
@@ -117,11 +116,7 @@
             [movies addObject:movie];
         }
         
-        self.popularMovies = movies;
-        
-        for (Movie *movie in movies) {
-            NSLog(@"%@", movie.title);
-        }
+        self.nowPlayingMovies = movies;
         
         NSLog(@"Finished fetching now playing movies!");
         
@@ -134,7 +129,6 @@
     // Make sure your segue name in storyboard is the same as this line
     if ([[segue identifier] isEqualToString:@"GoToDetail"])
     {
-        [self movieSetUp];
         // Get reference to the destination view controller
         DetailViewController *destination = (DetailViewController *)[segue destinationViewController];
         
@@ -142,26 +136,11 @@
         }
 }
 
-- (void)arraySetUp {
-    movieArray = [NSMutableArray arrayWithArray: @[@"1",@"2",@"3",@"4",@"5",@"6",@"7"]];
-}
-- (void)movieSetUp {
-    movie = Movie.new;
-    movie.category = @"";
-    movie.title = @"212";
-    movie.resume = @"212";
-    movie.overview = @"212";
-    movie.rate = @12;
-    movie.category = @"212";
-    movie.imageURL = @"212";
-}
 
 #pragma mark - UITableView Delegate, DataSource
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    //    static NSString *cellID = @"cell";
-    //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    //
+    
     static NSString *simpleTableIdentifier = @"cell";
     
     TableViewCell *cell = (TableViewCell *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
@@ -170,41 +149,64 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SimpleTableCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
     }
-    if (indexPath.section == 1) {
-        cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
-        cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
-        cell.movieTitle.text = @"titulo do filme, por gentileza";
-        cell.movireRatingLabel.text = @"nota";
+    if (indexPath.section == 0) {
+        cell.movieDescriptionLabel.text = self.popularMovies[indexPath.row].resume;
+        cell.movieTitle.text = self.popularMovies[indexPath.row].title;
+        NSString *rate = [self.popularMovies[indexPath.row].rate stringValue];
+        cell.movireRatingLabel.text = rate;
+        
+        dispatch_async(dispatch_get_global_queue(0,0), ^{
+            NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
+            imageURL = [imageURL stringByAppendingString:self.popularMovies[indexPath.row].imageURL];
+            
+            NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
+            if ( data == nil )
+                return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.movieImage.image = [UIImage imageWithData:data];
+            });
+        });
+        
     } else {
-        cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
-        cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
-        cell.movieTitle.text = @"titulo do filme, por gentileza";
-        cell.movireRatingLabel.text = @"nota";
+        cell.movieDescriptionLabel.text = self.nowPlayingMovies[indexPath.row].resume;
+        cell.movieTitle.text = self.nowPlayingMovies[indexPath.row].title;
+        NSString *rate = [self.nowPlayingMovies[indexPath.row].rate stringValue];
+        cell.movireRatingLabel.text = rate;
+        
+        dispatch_async(dispatch_get_global_queue(0,0), ^{
+            NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
+            imageURL = [imageURL stringByAppendingString:self.nowPlayingMovies[indexPath.row].imageURL];
+            
+            NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
+            if ( data == nil )
+                return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.movieImage.image = [UIImage imageWithData:data];
+            });
+        });
     }
-    
     
     return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    if (section == 1) {
-        return movieArray.count;
+    if (section == 0) {
+        return _popularMovies.count;
     } else {
-        return movieArray.count;
+        return _nowPlayingMovies.count;
     }
     
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
-        return @"Populares";
+    if (section == 0) {
+        return @"Filmes Populares";
     } else {
         return @"Em cartaz";
     }
@@ -212,11 +214,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.section == 0) {
-//        movie = movieArray[indexPath.row];
-//    } else {
-//        movie = movieArray[indexPath.row];
-//    }
+    movie = Movie.new;
+    if (indexPath.section == 0) {
+        movie = _popularMovies[indexPath.row];
+    } else {
+        movie = _nowPlayingMovies[indexPath.row];
+    }
     [self performSegueWithIdentifier:@"GoToDetail" sender: nil];
     
 }
