@@ -101,20 +101,43 @@
            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SimpleTableCell" owner:self options:nil];
            cell = [nib objectAtIndex:0];
        }
-    cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
-    cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
-    cell.movieTitle.text = @"titulo do filme, por gentileza";
-    cell.movireRatingLabel.text = @"nota";
-
+    if (indexPath.section == 1) {
+         cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
+           cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
+           cell.movieTitle.text = @"titulo do filme, por gentileza";
+           cell.movireRatingLabel.text = @"nota";
+    } else {
+        cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
+        cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
+        cell.movieTitle.text = @"titulo do filme, por gentileza";
+        cell.movireRatingLabel.text = @"nota";
+    }
+   
     
        return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    
-    return movieArray.count;
+    if (section == 1) {
+        return movieArray.count;
+    } else {
+        return movieArray.count;
+    }
 
 }
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 2;
+}
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section == 1) {
+        return @"Populares";
+    } else {
+        return @"Em cartaz";
+    }
+}
 @end
