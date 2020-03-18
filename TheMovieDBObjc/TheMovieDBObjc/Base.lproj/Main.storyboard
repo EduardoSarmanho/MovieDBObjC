@@ -135,7 +135,7 @@
                     <navigationItem key="navigationItem" title=" " id="RV0-jn-ex8"/>
                     <connections>
                         <outlet property="tableView" destination="bhD-zF-XlX" id="Pb5-hN-tE1"/>
-                        <segue destination="DC5-wj-NLO" kind="show" id="ASb-uY-Y2w"/>
+                        <segue destination="DC5-wj-NLO" kind="show" identifier="GoToDetail" id="ASb-uY-Y2w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -145,7 +145,7 @@
         <!--Movie Details-->
         <scene sceneID="0hl-PK-6za">
             <objects>
-                <viewController id="DC5-wj-NLO" sceneMemberID="viewController">
+                <viewController id="DC5-wj-NLO" customClass="DetailViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="foV-Cu-epZ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -227,6 +227,12 @@
                     <navigationItem key="navigationItem" title="Movie Details" id="8c2-0c-xEx">
                         <barButtonItem key="backBarButtonItem" title=" " id="q0e-co-qFW"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="MovieCategoriesLabel" destination="57U-Yx-fqa" id="KmC-eK-OjQ"/>
+                        <outlet property="movieDescriptionTextView" destination="L5W-gf-Mnu" id="dvL-7l-MXz"/>
+                        <outlet property="movieImage" destination="Pr9-sC-cej" id="xyV-hZ-nPS"/>
+                        <outlet property="movieTitleLabel" destination="2fo-ME-InZ" id="H6Z-6l-us0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oV9-fy-uaQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
