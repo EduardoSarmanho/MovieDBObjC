@@ -14,6 +14,7 @@
     __weak IBOutlet UILabel *movieTitleLabel;
     __weak IBOutlet UILabel *MovieCategoriesLabel;
     __weak IBOutlet UITextView *movieDescriptionTextView;
+    __weak IBOutlet UILabel *rateLabel;
 }
 @end
 
@@ -22,9 +23,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    movieImage.image = [UIImage imageNamed:[_movie.imageURL];
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+        NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
+        imageURL = [imageURL stringByAppendingString:self.movie.imageURL];
+        
+        NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
+        if ( data == nil )
+            return;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self->movieImage.image = [UIImage imageWithData:data];
+        });
+    });
     movieTitleLabel.text = _movie.title;
     MovieCategoriesLabel.text = _movie.category;
-    movieDescriptionTextView.text = _movie.description;
+    movieDescriptionTextView.text = _movie.overview;
+    NSString *rate = [self.movie.rate stringValue];
+    rateLabel.text = rate;
 }
 
 /*

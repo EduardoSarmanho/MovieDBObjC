@@ -27,8 +27,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self movieSetUp];
-    [self arraySetUp];
     [self fetchPopularMovies];
     [self fetchNowPlayingMovies];
     
@@ -131,26 +129,11 @@
     // Make sure your segue name in storyboard is the same as this line
     if ([[segue identifier] isEqualToString:@"GoToDetail"])
     {
-        [self movieSetUp];
         // Get reference to the destination view controller
         DetailViewController *destination = (DetailViewController *)[segue destinationViewController];
         
         destination.movie = movie;
         }
-}
-
-- (void)arraySetUp {
-    movieArray = [NSMutableArray arrayWithArray: @[@"1",@"2",@"3",@"4",@"5",@"6",@"7"]];
-}
-- (void)movieSetUp {
-    movie = Movie.new;
-    movie.category = @"";
-    movie.title = @"212";
-    movie.resume = @"212";
-    movie.overview = @"212";
-    movie.rate = @12;
-    movie.category = @"212";
-    movie.imageURL = @"212";
 }
 
 
@@ -231,11 +214,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.section == 0) {
-//        movie = movieArray[indexPath.row];
-//    } else {
-//        movie = movieArray[indexPath.row];
-//    }
+    movie = Movie.new;
+    if (indexPath.section == 0) {
+        movie = _popularMovies[indexPath.row];
+    } else {
+        movie = _nowPlayingMovies[indexPath.row];
+    }
     [self performSegueWithIdentifier:@"GoToDetail" sender: nil];
     
 }
