@@ -24,8 +24,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self arraySetUp];
     
+    [self arraySetUp];
     [self fetchPopularMovies];
     [self fetchNowPlayingMovies];
 }
