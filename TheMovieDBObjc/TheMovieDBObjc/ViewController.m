@@ -26,9 +26,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self arraySetUp];
     [self fetchPopularMovies];
     [self fetchNowPlayingMovies];
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void){
+        [self.tableView reloadData];
+    });
 }
 
 - (void) fetchPopularMovies {
@@ -54,7 +58,7 @@
             NSString *description = movieList[@"overview"];
             NSNumber *rate = movieList[@"vote_average"];
             NSString *imageURL = movieList[@"poster_path"];
-//            NSString *category = movieList[@""]
+            //            NSString *category = movieList[@""]
             
             
             Movie *movie = Movie.new;
@@ -63,16 +67,12 @@
             movie.resume = description;
             movie.imageURL = imageURL;
             movie.rate = rate;
-//            movie.category = category;
-
+            //            movie.category = category;
+            
             [movies addObject:movie];
         }
         
         self.popularMovies = movies;
-        
-        for (Movie *movie in movies) {
-            NSLog(@"%@", movie.title);
-        }
         
         NSLog(@"Finished fetching popular movies!");
     }] resume];
@@ -101,7 +101,7 @@
             NSString *description = movieList[@"overview"];
             NSNumber *rate = movieList[@"vote_average"];
             NSString *imageURL = movieList[@"poster_path"];
-//            NSString *category = movieList[@""]
+            //            NSString *category = movieList[@""]
             
             
             Movie *movie = Movie.new;
@@ -110,80 +110,96 @@
             movie.resume = description;
             movie.imageURL = imageURL;
             movie.rate = rate;
-//            movie.category = category;
-
+            //            movie.category = category;
+            
             [movies addObject:movie];
         }
         
-        self.popularMovies = movies;
-        
-        for (Movie *movie in movies) {
-            NSLog(@"%@", movie.title);
-        }
+        self.nowPlayingMovies = movies;
         
         NSLog(@"Finished fetching now playing movies!");
         
     }] resume];
 }
 
-
-
-
-- (void)arraySetUp {
-    movieArray = [NSMutableArray arrayWithArray: @[@"1",@"2",@"3",@"4",@"5",@"6",@"7"]];
+- (void) reloadTableView {
+    
 }
+
 
 #pragma mark - UITableView Delegate, DataSource
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-//    static NSString *cellID = @"cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-//
-   static NSString *simpleTableIdentifier = @"cell";
     
-       TableViewCell *cell = (TableViewCell *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-       if (cell == nil)
-       {
-           NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SimpleTableCell" owner:self options:nil];
-           cell = [nib objectAtIndex:0];
-       }
-    if (indexPath.section == 1) {
-         cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
-           cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
-           cell.movieTitle.text = @"titulo do filme, por gentileza";
-           cell.movireRatingLabel.text = @"nota";
-    } else {
-        cell.movieDescriptionLabel.text = @"Gustavo, coloca aqui a descrição";
-        cell.movieImage.image = [UIImage imageNamed:[movieArray objectAtIndex:indexPath.row]]; //[nomeDoArrayDeFilmes objectAtIndex:indexPath.row]
-        cell.movieTitle.text = @"titulo do filme, por gentileza";
-        cell.movireRatingLabel.text = @"nota";
+    static NSString *simpleTableIdentifier = @"cell";
+    
+    TableViewCell *cell = (TableViewCell *)[tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    if (cell == nil)
+    {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SimpleTableCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
     }
-   
+    if (indexPath.section == 0) {
+        cell.movieDescriptionLabel.text = self.popularMovies[indexPath.row].resume;
+        cell.movieTitle.text = self.popularMovies[indexPath.row].title;
+        NSString *rate = [self.popularMovies[indexPath.row].rate stringValue];
+        cell.movireRatingLabel.text = rate;
+        
+        dispatch_async(dispatch_get_global_queue(0,0), ^{
+            NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
+            imageURL = [imageURL stringByAppendingString:self.popularMovies[indexPath.row].imageURL];
+            
+            NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
+            if ( data == nil )
+                return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.movieImage.image = [UIImage imageWithData:data];
+            });
+        });
+        
+    } else {
+        cell.movieDescriptionLabel.text = self.nowPlayingMovies[indexPath.row].resume;
+        cell.movieTitle.text = self.nowPlayingMovies[indexPath.row].title;
+        NSString *rate = [self.nowPlayingMovies[indexPath.row].rate stringValue];
+        cell.movireRatingLabel.text = rate;
+        
+        dispatch_async(dispatch_get_global_queue(0,0), ^{
+            NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
+            imageURL = [imageURL stringByAppendingString:self.nowPlayingMovies[indexPath.row].imageURL];
+            
+            NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
+            if ( data == nil )
+                return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.movieImage.image = [UIImage imageWithData:data];
+            });
+        });
+    }
     
-       return cell;
+    return cell;
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
-    if (section == 1) {
-        return movieArray.count;
+    
+    if (section == 0) {
+        return _popularMovies.count;
     } else {
-        return movieArray.count;
+        return _nowPlayingMovies.count;
     }
-
+    
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
-        return @"Populares";
+    if (section == 0) {
+        return @"Filmes Populares";
     } else {
         return @"Em cartaz";
     }
 }
+
 @end
