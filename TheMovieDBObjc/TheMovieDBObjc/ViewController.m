@@ -8,9 +8,9 @@
 
 #import "ViewController.h"
 #import "Movie.h"
-#import "APIAnswer.h"
 #import "TableViewCell.h"
 #import "DetailViewController.h"
+#import "Genre.h"
 
 @interface ViewController () <UITableViewDelegate, UITableViewDataSource> {
     NSMutableArray *movieArray;
@@ -20,6 +20,8 @@
 
 @property (strong, nonatomic) NSMutableArray<Movie *> *popularMovies;
 @property (strong, nonatomic) NSMutableArray<Movie *> *nowPlayingMovies;
+@property (strong, nonatomic) NSMutableArray<Genre *> *genres;
+@property (strong, nonatomic) NSMutableArray<Movie *> *searchedMovies;
 
 @end
 
@@ -30,10 +32,89 @@
     [self fetchPopularMovies];
     [self fetchNowPlayingMovies];
     
-    
     dispatch_async(dispatch_get_main_queue(), ^(void){
         [self.tableView reloadData];
     });
+}
+
+- (void) fetchSearchMovies: (NSString *) name {
+    NSLog(@"Fetching searched string...");
+    
+    NSMutableArray<Movie *> *searchedMovies = NSMutableArray.new;
+    
+    NSString *urlString = @"https://api.themoviedb.org/3/search/movie?api_key=ca01e6658836c07edbe8b8ce2ac738c1&language=pt-BR&query=";
+    NSString *urlString2 = @"&page=1&include_adult=false";
+    urlString = [urlString stringByAppendingString: name];
+    urlString = [urlString stringByAppendingString:urlString2];
+    
+    NSURL *url = [NSURL URLWithString:urlString];
+    [[NSURLSession.sharedSession dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSError *err;
+        NSArray *results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
+        if (err){
+            NSLog(@"Failed to serialize into JSON: %@", err);
+            return;
+        }
+        
+        NSDictionary *resultDictionary = [results valueForKey: @"results"];
+        for (NSDictionary *movieList in resultDictionary) {
+            NSString *title = movieList[@"title"];
+            NSString *overview = movieList[@"overview"];
+            NSNumber *rating = movieList[@"vote_average"];
+            NSString *posterPath = movieList[@"poster_path"];
+            NSNumber *identifier = movieList[@"id"];
+            
+            Movie *movie = Movie.new;
+            movie.title = title;
+            movie.overview = overview;
+            movie.posterPath = posterPath;
+            movie.rating = rating;
+            movie.identifier = identifier;
+            
+            [searchedMovies addObject:movie];
+        }
+        self.searchedMovies = searchedMovies;
+        
+        NSLog(@"Finished fecthing searched string!");
+    }] resume];
+}
+
+- (void) fetchMovieGenres: (NSNumber *) movieId {
+    NSLog(@"Fetching selected movie genres...");
+    
+    NSMutableArray<Genre *> *genres = NSMutableArray.new;
+    
+    NSString *urlString = @"https://api.themoviedb.org/3/movie/";
+    NSString *urlString2 = @"?api_key=ca01e6658836c07edbe8b8ce2ac738c1&language=pt-BR";
+    NSString *movieIdentifier = [movieId stringValue];
+    urlString = [urlString stringByAppendingString: movieIdentifier];
+    urlString = [urlString stringByAppendingString:urlString2];
+    NSURL *url = [NSURL URLWithString:urlString];
+    [[NSURLSession.sharedSession dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        NSError *err;
+        NSArray *results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
+        if (err){
+            NSLog(@"Failed to serialize into JSON: %@", err);
+            return;
+        }
+        
+        NSDictionary *resultDictionary = [results valueForKey: @"genres"];
+        for (NSDictionary *genreList in resultDictionary) {
+            NSString *name = genreList[@"name"];
+            NSNumber *identifier = genreList[@"id"];
+            
+            Genre *genre = Genre.new;
+            genre.name = name;
+            genre.identifier = identifier;
+            
+            [genres addObject:genre];
+        }
+        self.genres = genres;
+        
+        NSLog(@"Finished fetching selected movie genres!");
+    }] resume];
 }
 
 - (void) fetchPopularMovies {
@@ -56,37 +137,30 @@
         
         for (NSDictionary *movieList in queryDictionary) {
             NSString *title = movieList[@"title"];
-            NSString *description = movieList[@"overview"];
-            NSNumber *rate = movieList[@"vote_average"];
-            NSString *imageURL = movieList[@"poster_path"];
-            //            NSString *category = movieList[@""]
-            
+            NSString *overview = movieList[@"overview"];
+            NSNumber *rating = movieList[@"vote_average"];
+            NSString *posterPath = movieList[@"poster_path"];
+            NSNumber *identifier = movieList[@"id"];
             
             Movie *movie = Movie.new;
             movie.title = title;
-            movie.overview = description;
-            movie.resume = description;
-            movie.imageURL = imageURL;
-            movie.rate = rate;
-            //            movie.category = category;
+            movie.overview = overview;
+            movie.posterPath = posterPath;
+            movie.rating = rating;
+            movie.identifier = identifier;
             
             [movies addObject:movie];
         }
-        
         self.popularMovies = movies;
-        
         NSLog(@"Finished fetching popular movies!");
     }] resume];
 }
 
 - (void) fetchNowPlayingMovies {
     NSLog(@"Fetching now movies...");
-    
     NSString *urlString = @"https://api.themoviedb.org/3/movie/now_playing?api_key=ca01e6658836c07edbe8b8ce2ac738c1&language=pt-BR&page=1";
     NSURL *url = [NSURL URLWithString:urlString];
-    
     [[NSURLSession.sharedSession dataTaskWithURL:url completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
         NSError *err;
         NSArray *results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&err];
         if (err){
@@ -99,27 +173,23 @@
         
         for (NSDictionary *movieList in queryDictionary) {
             NSString *title = movieList[@"title"];
-            NSString *description = movieList[@"overview"];
-            NSNumber *rate = movieList[@"vote_average"];
-            NSString *imageURL = movieList[@"poster_path"];
-            //            NSString *category = movieList[@""]
-            
+            NSString *overview = movieList[@"overview"];
+            NSNumber *rating = movieList[@"vote_average"];
+            NSString *posterPath = movieList[@"poster_path"];
+            NSNumber *identifier = movieList[@"id"];
             
             Movie *movie = Movie.new;
             movie.title = title;
-            movie.overview = description;
-            movie.resume = description;
-            movie.imageURL = imageURL;
-            movie.rate = rate;
-            //            movie.category = category;
+            movie.overview = overview;
+            movie.posterPath = posterPath;
+            movie.rating = rating;
+            movie.identifier = identifier;
             
             [movies addObject:movie];
         }
-        
         self.nowPlayingMovies = movies;
         
         NSLog(@"Finished fetching now playing movies!");
-        
     }] resume];
 }
 
@@ -150,14 +220,14 @@
         cell = [nib objectAtIndex:0];
     }
     if (indexPath.section == 0) {
-        cell.movieDescriptionLabel.text = self.popularMovies[indexPath.row].resume;
+        cell.movieDescriptionLabel.text = self.popularMovies[indexPath.row].overview;
         cell.movieTitle.text = self.popularMovies[indexPath.row].title;
-        NSString *rate = [self.popularMovies[indexPath.row].rate stringValue];
+        NSString *rate = [self.popularMovies[indexPath.row].rating stringValue];
         cell.movireRatingLabel.text = rate;
         
         dispatch_async(dispatch_get_global_queue(0,0), ^{
             NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
-            imageURL = [imageURL stringByAppendingString:self.popularMovies[indexPath.row].imageURL];
+            imageURL = [imageURL stringByAppendingString:self.popularMovies[indexPath.row].posterPath];
             
             NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
             if ( data == nil )
@@ -168,14 +238,14 @@
         });
         
     } else {
-        cell.movieDescriptionLabel.text = self.nowPlayingMovies[indexPath.row].resume;
+        cell.movieDescriptionLabel.text = self.nowPlayingMovies[indexPath.row].overview;
         cell.movieTitle.text = self.nowPlayingMovies[indexPath.row].title;
-        NSString *rate = [self.nowPlayingMovies[indexPath.row].rate stringValue];
+        NSString *rate = [self.nowPlayingMovies[indexPath.row].rating stringValue];
         cell.movireRatingLabel.text = rate;
         
         dispatch_async(dispatch_get_global_queue(0,0), ^{
             NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
-            imageURL = [imageURL stringByAppendingString:self.nowPlayingMovies[indexPath.row].imageURL];
+            imageURL = [imageURL stringByAppendingString:self.nowPlayingMovies[indexPath.row].posterPath];
             
             NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
             if ( data == nil )

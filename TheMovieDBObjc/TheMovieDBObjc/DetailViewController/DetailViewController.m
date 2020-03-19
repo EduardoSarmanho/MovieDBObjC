@@ -25,7 +25,7 @@
 //    movieImage.image = [UIImage imageNamed:[_movie.imageURL];
     dispatch_async(dispatch_get_global_queue(0,0), ^{
         NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
-        imageURL = [imageURL stringByAppendingString:self.movie.imageURL];
+        imageURL = [imageURL stringByAppendingString:self.movie.posterPath];
         
         NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
         if ( data == nil )
@@ -37,7 +37,7 @@
     movieTitleLabel.text = _movie.title;
     MovieCategoriesLabel.text = _movie.category;
     movieDescriptionTextView.text = _movie.overview;
-    NSString *rate = [self.movie.rate stringValue];
+    NSString *rate = [self.movie.rating stringValue];
     rateLabel.text = rate;
 }
 
