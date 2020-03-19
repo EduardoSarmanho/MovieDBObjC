@@ -21,6 +21,9 @@
                                     <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="Tjl-z6-BE2">
                                         <rect key="frame" x="14" y="75" width="386" height="56"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="QdH-gA-d2G"/>
+                                        </connections>
                                     </searchBar>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movies" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhv-4Y-4as">
                                         <rect key="frame" x="14" y="20" width="110.5" height="41"/>
@@ -136,6 +139,7 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="ePA-Qo-WIs"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="searchBar" destination="Tjl-z6-BE2" id="U6v-w8-41R"/>
                         <outlet property="tableView" destination="bhD-zF-XlX" id="Pb5-hN-tE1"/>
                         <segue destination="DC5-wj-NLO" kind="show" identifier="GoToDetail" id="ASb-uY-Y2w"/>
                     </connections>
