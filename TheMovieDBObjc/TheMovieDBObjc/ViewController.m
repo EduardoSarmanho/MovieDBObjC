@@ -12,10 +12,13 @@
 #import "DetailViewController.h"
 #import "Genre.h"
 
-@interface ViewController () <UITableViewDelegate, UITableViewDataSource> {
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate> {
     NSMutableArray *movieArray;
     Movie *movie;
+    Boolean *isSearchSelected;
 }
+
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSMutableArray<Movie *> *popularMovies;
@@ -31,6 +34,7 @@
     [super viewDidLoad];
     [self fetchPopularMovies];
     [self fetchNowPlayingMovies];
+    isSearchSelected = false;
     
     dispatch_async(dispatch_get_main_queue(), ^(void){
         [self.tableView reloadData];
@@ -203,7 +207,7 @@
         DetailViewController *destination = (DetailViewController *)[segue destinationViewController];
         
         destination.movie = movie;
-        }
+    }
 }
 
 
@@ -219,6 +223,28 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"SimpleTableCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
     }
+    // if search bar is not empty return a new array of movies
+    if (isSearchSelected){
+        cell.movieDescriptionLabel.text = self.popularMovies[indexPath.row].overview;
+        cell.movieTitle.text = self.popularMovies[indexPath.row].title;
+        NSString *rate = [self.popularMovies[indexPath.row].rating stringValue];
+        cell.movireRatingLabel.text = rate;
+        
+        dispatch_async(dispatch_get_global_queue(0,0), ^{
+            NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
+            imageURL = [imageURL stringByAppendingString:self.popularMovies[indexPath.row].posterPath];
+            
+            NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
+            if ( data == nil )
+                return;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.movieImage.image = [UIImage imageWithData:data];
+            });
+        });
+        return cell;
+    }
+    
+    
     if (indexPath.section == 0) {
         cell.movieDescriptionLabel.text = self.popularMovies[indexPath.row].overview;
         cell.movieTitle.text = self.popularMovies[indexPath.row].title;
@@ -260,7 +286,9 @@
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
+    if (isSearchSelected){
+        return movieArray.count;
+    }
     if (section == 0) {
         return _popularMovies.count;
     } else {
@@ -270,6 +298,9 @@
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if (isSearchSelected){
+        return 0;
+    }
     return 2;
 }
 
@@ -285,6 +316,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     movie = Movie.new;
+    if (isSearchSelected){
+        movie = movieArray[indexPath.row];
+        [self performSegueWithIdentifier:@"GoToDetail" sender: nil];
+    }
     if (indexPath.section == 0) {
         movie = _popularMovies[indexPath.row];
     } else {
@@ -292,5 +327,25 @@
     }
     [self performSegueWithIdentifier:@"GoToDetail" sender: nil];
     
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text API_AVAILABLE(ios(3.0))
+{
+    NSString * searchString = searchBar.text;
+    if (![text  isEqual: @""]) {
+        searchString = [searchString stringByAppendingString: text];
+    } else {
+        searchString = [searchString substringToIndex:[searchString length] - 1];
+    }
+    
+    if ([searchString  isEqual: @""]) {
+        isSearchSelected = false;
+    } else {
+        isSearchSelected = true;
+    }
+    // usa searchString pra filtrar ex: filtrarArrayRequest(StringFiltrada: searchString)
+    [self.tableView reloadData];
+    
+    return YES;
 }
 @end
