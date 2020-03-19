@@ -42,6 +42,8 @@
 }
 
 - (void) fetchSearchMovies: (NSString *) name {
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+
     NSLog(@"Fetching searched string...");
     
     NSMutableArray<Movie *> *searchedMovies = NSMutableArray.new;
@@ -81,9 +83,16 @@
         self.searchedMovies = searchedMovies;
         
         NSLog(@"Finished fecthing searched string!");
-    }] resume];
-}
+        [self reloadData];
 
+    }] resume];
+    });
+}
+- (void) reloadData {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
 - (void) fetchMovieGenres: (NSNumber *) movieId {
     NSLog(@"Fetching selected movie genres...");
     
@@ -344,6 +353,7 @@
         isSearchSelected = true;
     }
     // usa searchString pra filtrar ex: filtrarArrayRequest(StringFiltrada: searchString)
+    [self fetchSearchMovies: searchString];
     [self.tableView reloadData];
     
     return YES;
