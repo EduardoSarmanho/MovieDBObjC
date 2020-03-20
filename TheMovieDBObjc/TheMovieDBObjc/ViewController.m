@@ -5,7 +5,7 @@
 //  Created by Eduardo Sarmanho on 16/03/20.
 //  Copyright © 2020 Eduardo Sarmanho. All rights reserved.
 //
-
+ 
 #import "ViewController.h"
 #import "Movie.h"
 #import "TableViewCell.h"
@@ -234,14 +234,17 @@
     }
     // if search bar is not empty return a new array of movies
     if (isSearchSelected){
-        cell.movieDescriptionLabel.text = self.popularMovies[indexPath.row].overview;
-        cell.movieTitle.text = self.popularMovies[indexPath.row].title;
-        NSString *rate = [self.popularMovies[indexPath.row].rating stringValue];
+        cell.movieDescriptionLabel.text = self.searchedMovies[indexPath.row].overview;
+        cell.movieTitle.text = self.searchedMovies[indexPath.row].title;
+        NSString *rate = [self.searchedMovies[indexPath.row].rating stringValue];
         cell.movireRatingLabel.text = rate;
         
         dispatch_async(dispatch_get_global_queue(0,0), ^{
             NSString *imageURL = @"https://image.tmdb.org/t/p/w500/";
-            imageURL = [imageURL stringByAppendingString:self.popularMovies[indexPath.row].posterPath];
+            if (self.searchedMovies[indexPath.row].posterPath == nil) {
+                self.searchedMovies[indexPath.row].posterPath = @"/140ewbWv8qHStD3mlBDvvGd0Zvu.jpg";
+            }
+            imageURL = [imageURL stringByAppendingString:self.searchedMovies[indexPath.row].posterPath];
             
             NSData * data = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString: imageURL]];
             if ( data == nil )
@@ -296,7 +299,7 @@
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (isSearchSelected){
-        return movieArray.count;
+        return _searchedMovies.count;
     }
     if (section == 0) {
         return _popularMovies.count;
@@ -308,7 +311,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (isSearchSelected){
-        return 0;
+        return 1;
     }
     return 2;
 }
@@ -354,7 +357,7 @@
     }
     // usa searchString pra filtrar ex: filtrarArrayRequest(StringFiltrada: searchString)
     [self fetchSearchMovies: searchString];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
     
     return YES;
 }
