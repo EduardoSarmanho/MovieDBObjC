@@ -68,7 +68,10 @@
             NSString *title = movieList[@"title"];
             NSString *overview = movieList[@"overview"];
             NSNumber *rating = movieList[@"vote_average"];
-            NSString *posterPath = movieList[@"poster_path"];
+            NSString *posterPath = @"";
+            if(![movieList[@"poster_path"] isEqual: [NSNull null]]){
+                posterPath = movieList[@"poster_path"];
+            }
             NSNumber *identifier = movieList[@"id"];
             
             Movie *movie = Movie.new;
