@@ -133,6 +133,8 @@
     }] resume];
 }
 
+
+
 - (void) fetchPopularMovies {
     NSLog(@"Fetching popular movies...");
     
