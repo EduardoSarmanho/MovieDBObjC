@@ -5,4 +5,4 @@
 #import "Movie.h"
 #import "Genre.h"
 #import "Response.h"
-
+#import "Functions.h"
