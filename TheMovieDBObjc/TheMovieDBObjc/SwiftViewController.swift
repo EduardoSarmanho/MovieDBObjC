@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class SwiftViewController: UIViewController {
     
     @IBOutlet weak var movieListTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "GoToDetail") {
-            if let destination = segue.destination as? DetailViewController {
+            if let destination = segue.destination as? SwiftDetailViewControler {
                 guard let movie = selectedMovie else {return}
                 destination.movie = movie
             }
@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UISearchBarDelegate {
+extension SwiftViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         var searchString = searchBar.text
         
@@ -55,7 +55,7 @@ extension ViewController: UISearchBarDelegate {
     }
 }
 
-extension ViewController: UITableViewDelegate, UITableViewDataSource {
+extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
             return "Filmes Populares"

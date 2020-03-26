@@ -3,7 +3,7 @@ import Foundation
 
 class DataConsuming {
     
-    var viewController = ViewController()
+    var viewController = SwiftViewController()
     func printNowPlayingMovies() {
 
     }

@@ -5,5 +5,4 @@
 #import "Movie.h"
 #import "Genre.h"
 #import "Response.h"
-#import "ViewController.h"
-#import "ViewController.m"
+

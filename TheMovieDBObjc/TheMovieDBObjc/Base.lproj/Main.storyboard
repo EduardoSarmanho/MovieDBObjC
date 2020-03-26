@@ -10,7 +10,7 @@
         <!-- -->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="SwiftViewController" customModule="TheMovieDBObjc" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -21,9 +21,6 @@
                                     <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="Tjl-z6-BE2">
                                         <rect key="frame" x="14" y="75" width="386" height="56"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="BYZ-38-t0r" id="QdH-gA-d2G"/>
-                                        </connections>
                                     </searchBar>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Movies" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhv-4Y-4as">
                                         <rect key="frame" x="14" y="20" width="110.5" height="41"/>
@@ -110,19 +107,13 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="movieDescription" destination="4JE-Wj-CGa" id="TqC-Kt-0r5"/>
-                                            <outlet property="movieDescriptionLabel" destination="4JE-Wj-CGa" id="tRl-lF-tqZ"/>
-                                            <outlet property="movieImage" destination="rbZ-L4-feJ" id="nn3-fg-9kw"/>
-                                            <outlet property="movieRating" destination="m8k-jv-nTK" id="eZ9-3q-9oz"/>
-                                            <outlet property="movieTitle" destination="8se-0I-9VP" id="8Wg-Kq-doN"/>
-                                            <outlet property="movireRatingLabel" destination="m8k-jv-nTK" id="Ta0-Ks-omK"/>
+                                            <outlet property="movieDescription" destination="4JE-Wj-CGa" id="KMm-k5-VtN"/>
+                                            <outlet property="movieImage" destination="rbZ-L4-feJ" id="9rK-LZ-o3o"/>
+                                            <outlet property="movieRating" destination="m8k-jv-nTK" id="lQN-2H-kFc"/>
+                                            <outlet property="movieTitle" destination="8se-0I-9VP" id="qBb-vb-ezH"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Lc4-GX-ipd"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="7it-JK-pDa"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -141,9 +132,8 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="ePA-Qo-WIs"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="movieListTableView" destination="bhD-zF-XlX" id="Vve-VE-vmR"/>
-                        <outlet property="searchBar" destination="Tjl-z6-BE2" id="G2f-fA-nDR"/>
-                        <outlet property="tableView" destination="bhD-zF-XlX" id="Pb5-hN-tE1"/>
+                        <outlet property="movieListTableView" destination="bhD-zF-XlX" id="27x-Tj-Ume"/>
+                        <outlet property="searchBar" destination="Tjl-z6-BE2" id="nZD-BO-H86"/>
                         <segue destination="DC5-wj-NLO" kind="show" identifier="GoToDetail" id="ASb-uY-Y2w"/>
                     </connections>
                 </viewController>
