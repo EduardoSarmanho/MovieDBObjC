@@ -3,20 +3,35 @@ import Foundation
 
 class DataConsuming {
     
-    var viewController = ViewController()
-    func printNowPlayingMovies() {
-        viewController.fetchPopularMovies()
-        print(viewController.popularMovies)
+    var functions = Functions()
+    var popularMovies: [Movie] = []
+    var nowPlayingMovies: [Movie] = []
+    var serchedMovies: [Movie] = []
+    
+    func fetchNowPlayingMovies() {
+        functions.fetchNowPlayingMovies(nil) { (result) in
+            self.nowPlayingMovies = result as! [Movie]
+            //            tableView.reloadData
+        }
     }
     
-    func printPopularMovies() {
-        
+    func fetchPopularMovies(){
+        functions.fetchPopularMovies(nil) { (result) in
+            self.popularMovies = result as! [Movie]
+            //            tableView.reloadData
+        }
     }
     
-    func getMovieDetails() {
-        
+    func fetchSearchMovies(movieName: String) {
+        functions.fetchSearchMovies(movieName, nil) { (result
+            ) in
+            self.serchedMovies = result as! [Movie]
+            //            tableView.reloadData
+            
+        }
     }
-
 }
+
+
 
 
