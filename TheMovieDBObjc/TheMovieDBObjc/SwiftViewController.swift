@@ -14,15 +14,50 @@ class SwiftViewController: UIViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     
-    var nowPlayingMovieList: [Movie]?
-    var popularMovieList: [Movie]?
-    var searchedMovieList: [Movie]?
+    var nowPlayingMovieList: [Movie] = []
+    var popularMovieList: [Movie] = []
+    var searchedMovieList: [Movie] = []
     var selectedMovie: Movie?
+    var functions = Functions()
     
     var isSearchSelected = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        movieListTableView.delegate = self
+        movieListTableView.dataSource = self
+        searchBar.delegate = self
+        fetchNowPlayingMovies()
+        fetchPopularMovies()
+    }
+    
+    func fetchNowPlayingMovies() {
+        functions.fetchNowPlayingMovies(nil) { (result) in
+            self.nowPlayingMovieList = result as? [Movie] ?? []
+            DispatchQueue.main.async {
+                self.movieListTableView.reloadData()
+            }
+        }
+    }
+    
+    func fetchPopularMovies(){
+        functions.fetchPopularMovies(nil) { (result) in
+            self.popularMovieList = result as? [Movie] ?? []
+            DispatchQueue.main.async {
+                self.movieListTableView.reloadData()
+            }
+        }
+    }
+    
+    func fetchSearchMovies(movieName: String) {
+        functions.fetchSearchMovies(movieName, nil) { (result
+            ) in
+            self.searchedMovieList = result as? [Movie] ?? []
+            DispatchQueue.main.async {
+                self.movieListTableView.reloadData()
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -72,24 +107,24 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedMovie = Movie()
         if isSearchSelected {
-            selectedMovie = searchedMovieList![indexPath.row]
+            selectedMovie = searchedMovieList[indexPath.row]
             performSegue(withIdentifier: "GoToDetail", sender: nil)
         }
         if indexPath.section == 0 {
-            selectedMovie = popularMovieList![indexPath.row]
+            selectedMovie = popularMovieList[indexPath.row]
         } else {
-            selectedMovie = nowPlayingMovieList![indexPath.row]
+            selectedMovie = nowPlayingMovieList[indexPath.row]
         }
         performSegue(withIdentifier: "GoToDetail", sender: nil)
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (isSearchSelected) {
-            return searchedMovieList!.count
+            return searchedMovieList.count
         }
         if (section == 0) {
-            return popularMovieList!.count
+            return popularMovieList.count
         } else {
-            return nowPlayingMovieList!.count
+            return nowPlayingMovieList.count
         }
     }
     
@@ -98,15 +133,16 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = movieListTableView.dequeueReusableCell(withIdentifier: simpleTableIdentifier) as! MovieTableViewCell
         
         if (isSearchSelected){
-            let movie = searchedMovieList![indexPath.row]
+            let movie = searchedMovieList[indexPath.row]
             
             cell.movieTitle.text = movie.title
             cell.movieDescription.text = movie.overview
             cell.movieRating.text = "\(movie.rating)"
             
             DispatchQueue.global(qos: .background).async {
-                let imageURL = "https://image.tmdb.org/t/p/w500/\(movie.posterPath)"
-                if let data = try? Data(contentsOf: URL(fileURLWithPath: imageURL)){
+                let imageURL = "https://image.tmdb.org/t/p/w500\(movie.posterPath)"
+                let url = URL(fileURLWithPath: imageURL)
+                if let data = try? Data(contentsOf: url){
                     DispatchQueue.main.async {
                         let image = UIImage(data: data)
                         cell.movieImage.image = image
@@ -115,15 +151,16 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         if (indexPath.section == 0) {
-            let movie = popularMovieList![indexPath.row]
+            let movie = popularMovieList[indexPath.row]
             
             cell.movieTitle.text = movie.title
             cell.movieDescription.text = movie.overview
             cell.movieRating.text = "\(movie.rating)"
             
             DispatchQueue.global(qos: .background).async {
-                let imageURL = "https://image.tmdb.org/t/p/w500/\(movie.posterPath)"
-                if let data = try? Data(contentsOf: URL(fileURLWithPath: imageURL)){
+                let imageURL = "https://image.tmdb.org/t/p/w500\(movie.posterPath)"
+                let url = URL(fileURLWithPath: imageURL)
+                if let data = try? Data(contentsOf: url){
                     DispatchQueue.main.async {
                         let image = UIImage(data: data)
                         cell.movieImage.image = image
@@ -131,15 +168,16 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         } else {
-            let movie = nowPlayingMovieList![indexPath.row]
+            let movie = nowPlayingMovieList[indexPath.row]
             
             cell.movieTitle.text = movie.title
             cell.movieDescription.text = movie.overview
             cell.movieRating.text = "\(movie.rating)"
             
             DispatchQueue.global(qos: .background).async {
-                let imageURL = "https://image.tmdb.org/t/p/w500/\(movie.posterPath)"
-                if let data = try? Data(contentsOf: URL(fileURLWithPath: imageURL)){
+                let imageURL = "https://image.tmdb.org/t/p/w500\(movie.posterPath)"
+                let url = URL(fileURLWithPath: imageURL)
+                if let data = try? Data(contentsOf: url){
                     DispatchQueue.main.async {
                         let image = UIImage(data: data)
                         cell.movieImage.image = image
