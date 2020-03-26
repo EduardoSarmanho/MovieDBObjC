@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2702515A242D21C800996155 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27025159242D21C800996155 /* MovieTableViewCell.swift */; };
 		272093802423E6E1002349F6 /* Genre.m in Sources */ = {isa = PBXBuildFile; fileRef = 2720937F2423E6E1002349F6 /* Genre.m */; };
 		2759F4FE242A7E9700B6E4D6 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2759F4FD242A7E9700B6E4D6 /* Networking.swift */; };
 		2759F501242A831E00B6E4D6 /* Response.m in Sources */ = {isa = PBXBuildFile; fileRef = 2759F500242A831E00B6E4D6 /* Response.m */; };
 		279674BA2420130700247885 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = 279674B92420130700247885 /* Movie.m */; };
+		27FED830242D1884003A2E84 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FED82F242D1884003A2E84 /* ViewController.swift */; };
 		7F02868A242BE2CE00598EB4 /* DataConsuming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F028689242BE2CE00598EB4 /* DataConsuming.swift */; };
 		7F319F492420136A004188E1 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F319F482420136A004188E1 /* TableViewCell.m */; };
 		7F88D38024228DA200BC9499 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F88D37F24228DA200BC9499 /* DetailViewController.m */; };
@@ -24,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		27025159242D21C800996155 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		2720937E2423E6E1002349F6 /* Genre.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Genre.h; sourceTree = "<group>"; };
 		2720937F2423E6E1002349F6 /* Genre.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Genre.m; sourceTree = "<group>"; };
 		2759F4FC242A7E9600B6E4D6 /* TheMovieDBObjc-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TheMovieDBObjc-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -32,6 +35,7 @@
 		2759F500242A831E00B6E4D6 /* Response.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Response.m; sourceTree = "<group>"; };
 		279674B82420130700247885 /* Movie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
 		279674B92420130700247885 /* Movie.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
+		27FED82F242D1884003A2E84 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7F028689242BE2CE00598EB4 /* DataConsuming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataConsuming.swift; sourceTree = "<group>"; };
 		7F319F472420136A004188E1 /* TableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
 		7F319F482420136A004188E1 /* TableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
@@ -97,6 +101,8 @@
 				7FA74222241FF756000C8528 /* SceneDelegate.m */,
 				7FA74224241FF756000C8528 /* ViewController.h */,
 				7FA74225241FF756000C8528 /* ViewController.m */,
+				27FED82F242D1884003A2E84 /* ViewController.swift */,
+				27025159242D21C800996155 /* MovieTableViewCell.swift */,
 				279674B82420130700247885 /* Movie.h */,
 				279674B92420130700247885 /* Movie.m */,
 				2759F4FF242A831E00B6E4D6 /* Response.h */,
@@ -194,11 +200,13 @@
 				272093802423E6E1002349F6 /* Genre.m in Sources */,
 				2759F4FE242A7E9700B6E4D6 /* Networking.swift in Sources */,
 				7F88D38024228DA200BC9499 /* DetailViewController.m in Sources */,
+				27FED830242D1884003A2E84 /* ViewController.swift in Sources */,
 				279674BA2420130700247885 /* Movie.m in Sources */,
 				7FA74231241FF759000C8528 /* main.m in Sources */,
 				7F02868A242BE2CE00598EB4 /* DataConsuming.swift in Sources */,
 				7F319F492420136A004188E1 /* TableViewCell.m in Sources */,
 				7FA74223241FF756000C8528 /* SceneDelegate.m in Sources */,
+				2702515A242D21C800996155 /* MovieTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
