@@ -104,7 +104,7 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return 2
     }
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedMovie = Movie()
         if isSearchSelected {
             selectedMovie = searchedMovieList[indexPath.row]
@@ -117,6 +117,7 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
         }
         performSegue(withIdentifier: "GoToDetail", sender: nil)
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (isSearchSelected) {
             return searchedMovieList.count

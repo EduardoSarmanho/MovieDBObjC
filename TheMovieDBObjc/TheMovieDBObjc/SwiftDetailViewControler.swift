@@ -12,21 +12,30 @@ class SwiftDetailViewControler: UIViewController {
 
     var movie: Movie?
     
+    @IBOutlet weak var movieImage: UIImageView!
+    @IBOutlet weak var movieTitle: UILabel!
+    @IBOutlet weak var movieGenre: UILabel!
+    @IBOutlet weak var movieRating: UILabel!
+    @IBOutlet weak var movieOverview: UITextView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        movieTitle.text = movie?.title
+        movieGenre.text = movie?.category
+        movieOverview.text = movie?.overview
+        movieRating.text = "\(movie?.rating ?? 5)"
+        
+        DispatchQueue.global(qos: .background).async {
+            let imageURL = "https://image.tmdb.org/t/p/w500\(self.movie?.posterPath ?? "/140ewbWv8qHStD3mlBDvvGd0Zvu.jpg")"
+            let url = URL(fileURLWithPath: imageURL)
+            if  let data = try? Data(contentsOf: url){
+                DispatchQueue.main.async {
+                    let image = UIImage(data: data)
+                    self.movieImage.image = image
+                }
+            }
+        }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

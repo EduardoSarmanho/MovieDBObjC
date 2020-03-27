@@ -144,7 +144,7 @@
         <!--Movie Details-->
         <scene sceneID="0hl-PK-6za">
             <objects>
-                <viewController id="DC5-wj-NLO" customClass="DetailViewController" sceneMemberID="viewController">
+                <viewController id="DC5-wj-NLO" customClass="SwiftDetailViewControler" customModule="TheMovieDBObjc" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="foV-Cu-epZ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -227,11 +227,11 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="q0e-co-qFW"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="MovieCategoriesLabel" destination="57U-Yx-fqa" id="KmC-eK-OjQ"/>
-                        <outlet property="movieDescriptionTextView" destination="L5W-gf-Mnu" id="dvL-7l-MXz"/>
-                        <outlet property="movieImage" destination="Pr9-sC-cej" id="xyV-hZ-nPS"/>
-                        <outlet property="movieTitleLabel" destination="2fo-ME-InZ" id="H6Z-6l-us0"/>
-                        <outlet property="rateLabel" destination="c7G-xh-Rs9" id="2O4-0j-ZAd"/>
+                        <outlet property="movieGenre" destination="57U-Yx-fqa" id="9Bb-uB-N8H"/>
+                        <outlet property="movieImage" destination="Pr9-sC-cej" id="dHi-DN-qVj"/>
+                        <outlet property="movieOverview" destination="L5W-gf-Mnu" id="Iuw-Jb-nr5"/>
+                        <outlet property="movieRating" destination="c7G-xh-Rs9" id="Eoe-7A-522"/>
+                        <outlet property="movieTitle" destination="2fo-ME-InZ" id="76l-Ig-Id0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oV9-fy-uaQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
