@@ -116,12 +116,13 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
             selectedMovie = searchedMovieList[indexPath.row]
             performSegue(withIdentifier: "GoToDetail", sender: nil)
         }
-        if indexPath.section == 0 {
+        else if indexPath.section == 0 {
             selectedMovie = popularMovieList[indexPath.row]
+            performSegue(withIdentifier: "GoToDetail", sender: nil)
         } else {
             selectedMovie = nowPlayingMovieList[indexPath.row]
+            performSegue(withIdentifier: "GoToDetail", sender: nil)
         }
-        performSegue(withIdentifier: "GoToDetail", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
