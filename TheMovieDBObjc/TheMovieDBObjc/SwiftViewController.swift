@@ -86,6 +86,8 @@ extension SwiftViewController: UISearchBarDelegate {
             isSearchSelected = true
         }
         
+        fetchSearchMovies(movieName: searchString ?? "")
+        
         return true
     }
 }
@@ -93,6 +95,9 @@ extension SwiftViewController: UISearchBarDelegate {
 extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
+            if isSearchSelected {
+                return "Pesquisa"
+            }
             return "Filmes Populares"
         } else {
             return "Em cartaz"
@@ -104,6 +109,7 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return 2
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedMovie = Movie()
         if isSearchSelected {
@@ -140,34 +146,32 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
             cell.movieDescription.text = movie.overview
             cell.movieRating.text = "\(movie.rating)"
             
-            DispatchQueue.global(qos: .background).async {
-                let imageURL = "https://image.tmdb.org/t/p/w500\(movie.posterPath)"
-                let url = URL(fileURLWithPath: imageURL)
-                if let data = try? Data(contentsOf: url){
-                    DispatchQueue.main.async {
-                        let image = UIImage(data: data)
-                        cell.movieImage.image = image
-                    }
+            DispatchQueue.global().async {
+                guard let imageURL = URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)") else { return }
+                guard let imageData = try? Data(contentsOf: imageURL) else { return }
+                let image = UIImage(data: imageData)
+                DispatchQueue.main.async {
+                    cell.movieImage.image = image
                 }
             }
+
         }
-        if (indexPath.section == 0) {
+        else if (indexPath.section == 0) {
             let movie = popularMovieList[indexPath.row]
             
             cell.movieTitle.text = movie.title
             cell.movieDescription.text = movie.overview
             cell.movieRating.text = "\(movie.rating)"
             
-            DispatchQueue.global(qos: .background).async {
-                let imageURL = "https://image.tmdb.org/t/p/w500\(movie.posterPath)"
-                let url = URL(fileURLWithPath: imageURL)
-                if let data = try? Data(contentsOf: url){
-                    DispatchQueue.main.async {
-                        let image = UIImage(data: data)
-                        cell.movieImage.image = image
-                    }
+            DispatchQueue.global().async {
+                guard let imageURL = URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)") else { return }
+                guard let imageData = try? Data(contentsOf: imageURL) else { return }
+                let image = UIImage(data: imageData)
+                DispatchQueue.main.async {
+                    cell.movieImage.image = image
                 }
             }
+            
         } else {
             let movie = nowPlayingMovieList[indexPath.row]
             
@@ -175,14 +179,13 @@ extension SwiftViewController: UITableViewDelegate, UITableViewDataSource {
             cell.movieDescription.text = movie.overview
             cell.movieRating.text = "\(movie.rating)"
             
-            DispatchQueue.global(qos: .background).async {
-                let imageURL = "https://image.tmdb.org/t/p/w500\(movie.posterPath)"
-                let url = URL(fileURLWithPath: imageURL)
-                if let data = try? Data(contentsOf: url){
-                    DispatchQueue.main.async {
-                        let image = UIImage(data: data)
-                        cell.movieImage.image = image
-                    }
+            
+            DispatchQueue.global().async {
+                guard let imageURL = URL(string: "https://image.tmdb.org/t/p/w500\(movie.posterPath)") else { return }
+                guard let imageData = try? Data(contentsOf: imageURL) else { return }
+                let image = UIImage(data: imageData)
+                DispatchQueue.main.async {
+                    cell.movieImage.image = image
                 }
             }
         }

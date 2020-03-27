@@ -27,14 +27,12 @@ class SwiftDetailViewControler: UIViewController {
         movieOverview.text = movie?.overview
         movieRating.text = "\(movie?.rating ?? 5)"
         
-        DispatchQueue.global(qos: .background).async {
-            let imageURL = "https://image.tmdb.org/t/p/w500\(self.movie?.posterPath ?? "/140ewbWv8qHStD3mlBDvvGd0Zvu.jpg")"
-            let url = URL(fileURLWithPath: imageURL)
-            if  let data = try? Data(contentsOf: url){
-                DispatchQueue.main.async {
-                    let image = UIImage(data: data)
-                    self.movieImage.image = image
-                }
+        DispatchQueue.global().async {
+            guard let imageURL = URL(string: "https://image.tmdb.org/t/p/w500\(self.movie?.posterPath ?? "/140ewbWv8qHStD3mlBDvvGd0Zvu.jpg")") else { return }
+            guard let imageData = try? Data(contentsOf: imageURL) else { return }
+            let image = UIImage(data: imageData)
+            DispatchQueue.main.async {
+                self.movieImage.image = image
             }
         }
     }
